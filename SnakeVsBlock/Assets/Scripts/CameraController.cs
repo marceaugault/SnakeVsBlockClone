@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -7,16 +5,16 @@ public class CameraController : MonoBehaviour
 	[SerializeField] float speed = 1f;
 	[SerializeField] Vector3 offset = new Vector3(0f, 10f, 0f);
 
-	Transform target;
+	SnakeController target;
     void Awake()
     {
-		target = GameObject.Find("Snake").transform;
+		target = FindObjectOfType<SnakeController>();
 
-		transform.position = target.transform.position + offset;
+		transform.position = target.GetHeadPosition() + offset;
 	}
 
     void Update()
     {
-		transform.position = Vector3.Lerp(transform.position, target.position + offset, speed * Time.deltaTime);
+		transform.position = Vector3.Lerp(transform.position, target.GetHeadPosition() + offset, speed * Time.deltaTime);
     }
 }

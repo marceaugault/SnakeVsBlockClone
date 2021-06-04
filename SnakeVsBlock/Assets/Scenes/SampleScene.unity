@@ -312,8 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae0f889bf9f49c41a9ecdd4773cbfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  offset: {x: 0, y: 10, z: 0}
+  speed: 20
+  offset: {x: 0, y: 10, z: 4}
 --- !u!1 &1174375388
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spherePrefab: {fileID: 8038585148447964729, guid: 75ac99c46053fd246b7393200486af6d, type: 3}
+  snakeColors: {fileID: 11400000, guid: f8e703e76b53ce242a3d52a5dbbf5ece, type: 2}
+  snakespeed: 12
   poolSize: 100
 --- !u!1 &1315684777
 GameObject:
@@ -404,6 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rules: {fileID: 11400000, guid: 235cc7781c83dfa4dbe8bacf9d154c87, type: 2}
   blockPrefab: {fileID: 422795554107431915, guid: 3f123674c8baf38419136f35b812b81e, type: 3}
+  spherePrefab: {fileID: 4141021700327609705, guid: e7e6201fdd1442d4bbf963dd5b7f1f94, type: 3}
 --- !u!1 &1351233810
 GameObject:
   m_ObjectHideFlags: 0
