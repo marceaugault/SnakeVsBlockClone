@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelController : MonoBehaviour
+public class LevelGeneration : MonoBehaviour
 {
 	[SerializeField] LevelRules rules;
 
@@ -9,7 +9,6 @@ public class LevelController : MonoBehaviour
 	public GameObject spherePrefab;
 
 	Vector3 blockScale;
-	Vector3 sphereScale;
 
 	Vector2 xBoundaries;
 	float levelWidth;
@@ -29,8 +28,6 @@ public class LevelController : MonoBehaviour
 		columnSize = levelWidth / (float)rules.nbColumn;
 
 		blockScale = new Vector3(columnSize, 1f, columnSize);
-		sphereScale = new Vector3(columnSize * rules.sphereSizeRelativeToColumn, columnSize * rules.sphereSizeRelativeToColumn,
-			columnSize * rules.sphereSizeRelativeToColumn);
 
 		CreateLevel();
 	}
@@ -180,28 +177,18 @@ public class LevelController : MonoBehaviour
 		}
 	}
 
-	public float GetSnakeScrollSpeed()
-	{
-		return rules.snakeScrollSpeed;
-	}
-
-	public float GetSnakeTurnSpeed()
-	{
-		return rules.snakeTurnSpeed;
-	}
-
-	public int GetSnakeLengthAtStart()
-	{
-		return rules.snakeStartLength;
-	}
-
 	public float GetSnakeSphereSize()
 	{
-		return columnSize * rules.snakeSizeRelativeToColumn;
+		return columnSize * rules.snakeBodyPartSizeRelativeToColumn;
 	}
 
 	public Vector2 GetLevelBoundariesX()
 	{
 		return xBoundaries;
+	}
+
+	public float GetLevelLength()
+	{
+		return rules.levelLength;
 	}
 }

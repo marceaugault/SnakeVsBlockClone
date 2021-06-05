@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SnakeController : MonoBehaviour
 {
 	public GameObject spherePrefab;
-	
+
+	[SerializeField] SnakeVariables snakeVariables;
 	[SerializeField] SnakeColors snakeColors;
 
 	List<GameObject> bodyParts = null;
@@ -16,36 +18,78 @@ public class SnakeController : MonoBehaviour
 	float snakeSpeed = 5f;
 	float bodyPartSize;
 
+	float levelLength;
+
+	GameManager manager = null;
+
+	GameObject countCanvas = null;
+	Text bodyPartsCount = null;
+
+	delegate void OnHeadLost();
+	OnHeadLost onHeadLost;
+	public int CurrentLength 
+	{
+		get { return currentLength; }
+		private set
+		{
+			currentLength = value;
+
+			if (bodyPartsCount)
+			{
+				bodyPartsCount.text = currentLength.ToString();
+			}
+		}
+	}
+
 	void Start()
 	{
-		LevelController level = FindObjectOfType<LevelController>();
+		countCanvas = GameObject.Find("SnakeCountCanvas");
+
+		if (countCanvas)
+		{
+			bodyPartsCount = countCanvas.GetComponentInChildren<Text>();
+		}
+
+		LevelGeneration level = FindObjectOfType<LevelGeneration>();
 
 		if (level)
 		{
-			snakeSpeed = level.GetSnakeScrollSpeed();
+			snakeSpeed = snakeVariables.snakeSpeed;
 			bodyPartSize = level.GetSnakeSphereSize();
 
 			xBoundaries = level.GetLevelBoundariesX();
+			xBoundaries.x += bodyPartSize;
+			xBoundaries.y -= bodyPartSize;
+
+			levelLength = level.GetLevelLength();
 
 			SpawnBody();
 
-			ToggleParts(0, level.GetSnakeLengthAtStart(), true);
+			ToggleParts(0, snakeVariables.snakeStartLength, true);
+		}
+
+		manager = FindObjectOfType<GameManager>();
+		if (manager)
+		{
+			onHeadLost += manager.OnHeadLost;
 		}
 	}
 
 	void Update()
 	{
 		MoveSnake();
+
+		UpdateTextCount();
 	}
 
 	void MoveSnake()
 	{
-		if (currentLength == 0)
+		if (CurrentLength == 0 || manager.State != GameState.Running)
 		{
 			return;
 		}
 
-		for (int i = currentLength - 1; i >= 1; i--)
+		for (int i = CurrentLength - 1; i >= 1; i--)
 		{
 			Vector3 dir = (bodyParts[i].transform.position - bodyParts[i - 1].transform.position).normalized;
 			bodyParts[i].transform.position = bodyParts[i - 1].transform.position + dir * bodyPartSize;
@@ -53,12 +97,34 @@ public class SnakeController : MonoBehaviour
 
 		Vector3 inputs = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
 
-		bodyParts[0].transform.Translate((Vector3.forward + inputs) * snakeSpeed * Time.fixedDeltaTime);
+		if (Input.touchCount > 0)
+		{
+			Vector3 touchDelta = Input.GetTouch(0).deltaPosition;
+			inputs.x = touchDelta.x * 0.06f;
+		}
+
+		Vector3 mvt = Vector3.forward + inputs;
+		if (mvt.z < 0f)
+		{
+			mvt.z = 0f;
+		}
+
+		bodyParts[0].transform.Translate(mvt * snakeSpeed * Time.fixedDeltaTime);
 
 		Vector3 crtPos = bodyParts[0].transform.position;
 		crtPos.x = Mathf.Clamp(crtPos.x, xBoundaries.x, xBoundaries.y);
 
 		bodyParts[0].transform.position = crtPos;
+
+		manager.UpdateCompletionPercent(crtPos.z / levelLength);
+	}
+
+	void UpdateTextCount()
+	{
+		if (CurrentLength > 0)
+		{
+			countCanvas.transform.position = bodyParts[0].transform.position + Vector3.forward * 0.5f;
+		}
 	}
 
 	private void SpawnBody()
@@ -79,13 +145,17 @@ public class SnakeController : MonoBehaviour
 			go.SetActive(false);
 			go.transform.localScale = new Vector3(bodyPartSize, bodyPartSize, bodyPartSize);
 
+			go.GetComponent<SphereCollider>().enabled = false;
+
 			bodyParts.Add(go);
 		}
+
+		bodyParts[0].GetComponent<SphereCollider>().enabled = true;
 	}
 
 	public void AddSphere(int nb)
 	{
-		ToggleParts(currentLength, currentLength + nb, true);
+		ToggleParts(CurrentLength, CurrentLength + nb, true);
 	}
 
 	public void RemoveFirstPart()
@@ -93,12 +163,18 @@ public class SnakeController : MonoBehaviour
 		TogglePart(0, false);
 
 		GameObject go = bodyParts[0];
+		go.GetComponent<SphereCollider>().enabled = false;
+
 		bodyParts.RemoveAt(0);
 		bodyParts.Add(go);
 
-		if (currentLength <= 0)
-		{
+		bodyParts[0].GetComponent<SphereCollider>().enabled = true;
 
+		onHeadLost?.Invoke();
+
+		if (CurrentLength <= 0 && manager)
+		{
+			manager.GameOver();
 		}
 	}
 
@@ -107,7 +183,13 @@ public class SnakeController : MonoBehaviour
 		if (i >= 0 && i < bodyParts.Count)
 		{
 			bodyParts[i].SetActive(active);
-			currentLength = active ? currentLength + 1 : currentLength - 1;
+
+			if (i > 0)
+			{
+				bodyParts[i].transform.position = bodyParts[i - 1].transform.position - Vector3.forward * bodyPartSize;
+			}
+
+			CurrentLength = active ? CurrentLength + 1 : CurrentLength - 1;
 
 			if (active)
 			{

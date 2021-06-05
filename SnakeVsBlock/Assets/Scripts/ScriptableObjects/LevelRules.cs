@@ -7,11 +7,8 @@ public class LevelRules : ScriptableObject
 	public Color finishLineColor = Color.white;
 
 	[Header("Snake")]
-	public int snakeStartLength = 4;
-	public float snakeScrollSpeed = 1f;
-	public float snakeTurnSpeed = 1f;
 	[Range(0.1f, 1f)]
-	public float snakeSizeRelativeToColumn = 0.5f;
+	public float snakeBodyPartSizeRelativeToColumn = 0.5f;
 
 	[Header("Level Generation")]
 	public float levelLength = 50f;
