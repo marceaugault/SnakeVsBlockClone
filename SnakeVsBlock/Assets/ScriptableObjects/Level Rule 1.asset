@@ -17,7 +17,7 @@ MonoBehaviour:
   snakeStartLength: 4
   snakeScrollSpeed: 5
   snakeTurnSpeed: 10
-  snakeSizeRelativeToColumn: 0.5
+  snakeSizeRelativeToColumn: 0.3
   levelLength: 500
   nbColumn: 5
   distanceBetweenWallBlocks: {x: 10, y: 20}

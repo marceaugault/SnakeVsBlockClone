@@ -16,6 +16,12 @@ public class SnakeSphere : MonoBehaviour
 	{
 		if (targetSphere)
 		{
+			//Vector3 dir = (transform.position - targetSphere.transform.position).normalized;
+			//transform.position = targetSphere.transform.position + dir * targetSphere.transform.localScale.x;
+			//Vector3 p = transform.position;
+			//p.z = targetSphere.transform.position.z - targetSphere.transform.localScale.x;
+			//transform.position = p;
+
 			Vector3 targetPos = new Vector3(targetSphere.transform.position.x, 0f, transform.position.z);
 			transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
 		}
