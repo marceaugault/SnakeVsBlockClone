@@ -11,8 +11,12 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
 	Text scoreTxt = null;
+	Text highscoreTxt = null;
+
+	GameObject highscoreImg = null;
 
 	int score;
+	int highscore;
 
 	Text onLevelFinishedTxt = null;
 	Button replayBtn = null;
@@ -43,7 +47,7 @@ public class GameManager : MonoBehaviour
 			onLevelFinishedTxt.enabled = false;
 		}
 
-		replayBtn = GameObject.Find("ReplayButton").GetComponent<Button>();
+		replayBtn = GameObject.Find("ContinueButton").GetComponent<Button>();
 		if (replayBtn)
 		{
 			replayBtn.onClick.AddListener(() => { OnReplayButton(); });
@@ -53,6 +57,27 @@ public class GameManager : MonoBehaviour
 		completionPercent = GameObject.Find("CompletionPercent").GetComponent<Slider>();
 
 		State = GameState.Running;
+
+		if (PlayerPrefs.HasKey("highscore"))
+		{
+			highscore = PlayerPrefs.GetInt("highscore");
+		}
+		else
+		{
+			highscore = 0;
+		}
+
+		highscoreTxt = GameObject.Find("HighscoreText").GetComponent<Text>();
+		highscoreTxt.text = highscore.ToString();
+		highscoreTxt.enabled = false;
+
+		highscoreImg = GameObject.Find("HighscoreSprite");
+		highscoreImg.SetActive(false);
+	}
+
+	private void OnDestroy()
+	{
+		PlayerPrefs.SetInt("highscore", highscore);
 	}
 
 	public void UpdateCompletionPercent(float value)
@@ -65,25 +90,31 @@ public class GameManager : MonoBehaviour
 	}
 	public void GameOver()
 	{
-		if (onLevelFinishedTxt && replayBtn)
-		{
-			onLevelFinishedTxt.enabled = true;
-			onLevelFinishedTxt.text = "Game Over";
-
-			replayBtn.gameObject.SetActive(true);
-		}
-
-		State = GameState.Menu;
+		GameFinished("Game Over");
 	}
 
 	public void LevelCompleted()
 	{
-		if (onLevelFinishedTxt && replayBtn)
+		GameFinished("Level Completed!");
+	}
+
+	void GameFinished(string msg)
+	{
+		if (onLevelFinishedTxt && replayBtn && highscoreTxt && highscoreImg)
 		{
 			onLevelFinishedTxt.enabled = true;
-			onLevelFinishedTxt.text = "Level Completed!";
+			onLevelFinishedTxt.text = msg;
+
+			highscoreTxt.enabled = true;
+			highscoreImg.SetActive(true);
 
 			replayBtn.gameObject.SetActive(true);
+		}
+
+		if (score > highscore)
+		{
+			highscore = score;
+			highscoreTxt.text = highscore.ToString();
 		}
 
 		State = GameState.Menu;
@@ -91,6 +122,16 @@ public class GameManager : MonoBehaviour
 
 	public void OnReplayButton()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		string crtSceneName = SceneManager.GetActiveScene().name;
+
+		if (crtSceneName == "Level1")
+		{
+			SceneManager.LoadScene("Level2");
+		}
+		else
+		{
+			SceneManager.LoadScene("Level1");
+		}
+
 	}
 }

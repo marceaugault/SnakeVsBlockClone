@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a7ccce12920b846b1b2e6ad94ead98, type: 3}
+  m_Name: Level1 Rules
+  m_EditorClassIdentifier: 
+  backgroundColor: {r: 0, g: 0.59969413, b: 0.9245283, a: 1}
+  finishLineColor: {r: 1, g: 1, b: 1, a: 1}
+  snakeBodyPartSizeRelativeToColumn: 0.3
+  levelLength: 200
+  nbColumn: 5
+  distanceBetweenWallBlocks: {x: 10, y: 20}
+  distanceBetweenRandomBlocks: {x: 5, y: 10}
+  blocksLifeRange: {x: 1, y: 18}
+  lowLifeBlockColor: {r: 1, g: 0.9471739, b: 0.088679194, a: 1}
+  highLifeBlockColor: {r: 0.9339623, g: 0.12305083, b: 0.10044494, a: 1}
+  distanceBetweenSpheres: {x: 2, y: 8}
+  sphereLifeNb: {x: 1, y: 10}
+  sphereSizeRelativeToColumn: 0.5
