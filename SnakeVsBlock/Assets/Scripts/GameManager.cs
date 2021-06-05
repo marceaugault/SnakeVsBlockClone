@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
 	Text onLevelFinishedTxt = null;
 	Button replayBtn = null;
+	Button nextLvlBtn = null;
 
 	Slider completionPercent;
 	public GameState State { get; private set; }
@@ -47,11 +48,18 @@ public class GameManager : MonoBehaviour
 			onLevelFinishedTxt.enabled = false;
 		}
 
-		replayBtn = GameObject.Find("ContinueButton").GetComponent<Button>();
+		replayBtn = GameObject.Find("ReplayButton").GetComponent<Button>();
 		if (replayBtn)
 		{
 			replayBtn.onClick.AddListener(() => { OnReplayButton(); });
 			replayBtn.gameObject.SetActive(false);
+		}
+		
+		nextLvlBtn = GameObject.Find("NextLevelButton").GetComponent<Button>();
+		if (nextLvlBtn)
+		{
+			nextLvlBtn.onClick.AddListener(() => { OnNextLevel(); });
+			nextLvlBtn.gameObject.SetActive(false);
 		}
 
 		completionPercent = GameObject.Find("CompletionPercent").GetComponent<Slider>();
@@ -109,6 +117,7 @@ public class GameManager : MonoBehaviour
 			highscoreImg.SetActive(true);
 
 			replayBtn.gameObject.SetActive(true);
+			nextLvlBtn.gameObject.SetActive(true);
 		}
 
 		if (score > highscore)
@@ -122,6 +131,11 @@ public class GameManager : MonoBehaviour
 
 	public void OnReplayButton()
 	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void OnNextLevel()
+	{
 		string crtSceneName = SceneManager.GetActiveScene().name;
 
 		if (crtSceneName == "Level1")
@@ -132,6 +146,5 @@ public class GameManager : MonoBehaviour
 		{
 			SceneManager.LoadScene("Level1");
 		}
-
 	}
 }
