@@ -15,13 +15,13 @@ MonoBehaviour:
   backgroundColor: {r: 0, g: 0.59969413, b: 0.9245283, a: 1}
   finishLineColor: {r: 1, g: 1, b: 1, a: 1}
   snakeBodyPartSizeRelativeToColumn: 0.3
-  levelLength: 200
+  levelLength: 100
   nbColumn: 5
   distanceBetweenWallBlocks: {x: 10, y: 20}
   distanceBetweenRandomBlocks: {x: 5, y: 10}
   blocksLifeRange: {x: 1, y: 18}
-  lowLifeBlockColor: {r: 1, g: 0.9471739, b: 0.088679194, a: 1}
-  highLifeBlockColor: {r: 0.9339623, g: 0.12305083, b: 0.10044494, a: 1}
+  lowLifeBlockColor: {r: 1, g: 0.6166877, b: 0, a: 1}
+  highLifeBlockColor: {r: 0.990566, g: 0.018993454, b: 0, a: 1}
   distanceBetweenSpheres: {x: 2, y: 8}
   sphereLifeNb: {x: 1, y: 10}
-  sphereSizeRelativeToColumn: 0.5
+  sphereSizeRelativeToColumn: 0.4

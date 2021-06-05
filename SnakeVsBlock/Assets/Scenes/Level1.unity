@@ -1084,7 +1084,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: REPLAY
+  m_Text: CONTINUE
 --- !u!222 &1310912158
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1136,7 +1136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b36cb71f73ec0dc419d05853e46c0234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rules: {fileID: 11400000, guid: 84e1d29d016f36e4d8b46cf5807d48ba, type: 2}
+  rules: {fileID: 11400000, guid: 7344a9fedf61a494781c0b2fabb30b4a, type: 2}
   blockPrefab: {fileID: 422795554107431915, guid: a7f4362b9ff4ae64483e57448753ed68, type: 3}
   spherePrefab: {fileID: 4141021700327609705, guid: 3f8389685d5c87542895acb685649f09, type: 3}
 --- !u!1 &1458834642
@@ -1489,7 +1489,7 @@ GameObject:
   - component: {fileID: 1745771789}
   - component: {fileID: 1745771788}
   m_Layer: 5
-  m_Name: ReplayButton
+  m_Name: ContinueButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
