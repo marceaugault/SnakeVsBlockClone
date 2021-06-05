@@ -7,72 +7,94 @@ public class SnakeController : MonoBehaviour
 	
 	[SerializeField] SnakeColors snakeColors;
 
-	List<SnakeSphere> spheres = null;
+	List<GameObject> bodyParts = null;
 	int currentLength;
 	[SerializeField] int poolSize = 100;
 
+	Vector2 xBoundaries;
+
 	float snakeSpeed = 5f;
+	float bodyPartSize;
 
 	void Start()
 	{
 		LevelController level = FindObjectOfType<LevelController>();
 
-		snakeSpeed = level.GetSnakeScrollSpeed();
+		if (level)
+		{
+			snakeSpeed = level.GetSnakeScrollSpeed();
+			bodyPartSize = level.GetSnakeSphereSize();
 
-		SpawnSpheres(level);
+			xBoundaries = level.GetLevelBoundariesX();
 
-		int length = level.GetSnakeLengthAtStart();
-		ToggleRangeSpheres(0, length, true);
+			SpawnBody();
+
+			ToggleParts(0, level.GetSnakeLengthAtStart(), true);
+		}
 	}
 
 	void Update()
 	{
-		if (currentLength > 0)
-		{
-			transform.position += Vector3.forward * Time.deltaTime * snakeSpeed;
-		}
+		MoveSnake();
 	}
 
-	private void SpawnSpheres(LevelController level)
+	void MoveSnake()
 	{
-		if (spheres != null)
+		if (currentLength == 0)
 		{
-			spheres.Clear();
+			return;
+		}
+
+		for (int i = currentLength - 1; i >= 1; i--)
+		{
+			Vector3 dir = (bodyParts[i].transform.position - bodyParts[i - 1].transform.position).normalized;
+			bodyParts[i].transform.position = bodyParts[i - 1].transform.position + dir * bodyPartSize;
+		}
+
+		Vector3 inputs = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+
+		bodyParts[0].transform.Translate((Vector3.forward + inputs) * snakeSpeed * Time.fixedDeltaTime);
+
+		Vector3 crtPos = bodyParts[0].transform.position;
+		crtPos.x = Mathf.Clamp(crtPos.x, xBoundaries.x, xBoundaries.y);
+
+		bodyParts[0].transform.position = crtPos;
+	}
+
+	private void SpawnBody()
+	{
+		if (bodyParts != null)
+		{
+			bodyParts.Clear();
 		}
 		else
 		{
-			spheres = new List<SnakeSphere>();
+			bodyParts = new List<GameObject>();
 		}
-
-		float sphereSize = level.GetSnakeSphereSize();
 		
 		for (int i = 0; i < poolSize; i++)
 		{
-			GameObject go = Instantiate(spherePrefab, new Vector3(0f, 0f, -i * sphereSize), Quaternion.identity, transform);
+			GameObject go = Instantiate(spherePrefab, new Vector3(0f, 0f, -i * bodyPartSize), 
+				Quaternion.identity, transform);
 			go.SetActive(false);
-			go.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
+			go.transform.localScale = new Vector3(bodyPartSize, bodyPartSize, bodyPartSize);
 
-			SnakeSphere sphere = go.GetComponent<SnakeSphere>();
-			sphere.Init(level.GetSnakeTurnSpeed());
-			spheres.Add(sphere);
-
+			bodyParts.Add(go);
 		}
 	}
 
 	public void AddSphere(int nb)
 	{
-		ToggleRangeSpheres(currentLength, currentLength + nb, true);
+		ToggleParts(currentLength, currentLength + nb, true);
 	}
 
-	public void RemoveFirstSphere()
+	public void RemoveFirstPart()
 	{
-		ToggleSphere(0, false);
+		TogglePart(0, false);
 
-		SnakeSphere go = spheres[0];
-		spheres.RemoveAt(0);
-		spheres.Add(go);
-
-		spheres[0].ChangeTargetSphere(null);
+		GameObject go = bodyParts[0];
+		bodyParts.RemoveAt(0);
+		bodyParts.Add(go);
 
 		if (currentLength <= 0)
 		{
@@ -80,29 +102,26 @@ public class SnakeController : MonoBehaviour
 		}
 	}
 
-	private void ToggleSphere(int i, bool active)
+	private void TogglePart(int i, bool active)
 	{
-		if (i >= 0 && i < spheres.Count)
+		if (i >= 0 && i < bodyParts.Count)
 		{
+			bodyParts[i].SetActive(active);
+			currentLength = active ? currentLength + 1 : currentLength - 1;
+
 			if (active)
 			{
-				spheres[i].Activate(GetColor(i));
-				spheres[i].ChangeTargetSphere(i - 1 >= 0 ? spheres[i - 1] : null);
+				MeshRenderer ren = bodyParts[i].GetComponent<MeshRenderer>();
+				ren.material.color = GetColor(i);
 			}
-			else
-			{
-				spheres[i].Deactivate();
-			}
-
-			currentLength = active ? currentLength + 1 : currentLength - 1;
 		}
 	}
 
-	private void ToggleRangeSpheres(int start, int end, bool active)
+	private void ToggleParts(int start, int end, bool active)
 	{
 		for (int i = start; i < end; i++)
 		{
-			ToggleSphere(i, active);
+			TogglePart(i, active);
 		}
 	}
 
@@ -115,6 +134,6 @@ public class SnakeController : MonoBehaviour
 
 	public Vector3 GetHeadPosition()
 	{
-		return (spheres != null && spheres.Count >= 0) ? spheres[0].transform.position : Vector3.zero;
+		return (bodyParts != null && bodyParts.Count >= 0) ? bodyParts[0].transform.position : Vector3.zero;
 	}
 }

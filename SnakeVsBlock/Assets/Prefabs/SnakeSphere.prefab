@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9122175069071803832}
   - component: {fileID: 8758882689236857003}
   - component: {fileID: -5217282295990928545}
-  - component: {fileID: 4461674457848063246}
   m_Layer: 6
   m_Name: SnakeSphere
   m_TagString: Untagged
@@ -113,15 +112,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4461674457848063246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8038585148447964729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ba78abc7e8def4dbb500f745904538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

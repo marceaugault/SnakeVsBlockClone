@@ -39,10 +39,7 @@ public class Block : MonoBehaviour
 			Life--;
 
 			SnakeController snake = collision.gameObject.GetComponentInParent<SnakeController>();
-			if (snake)
-			{
-				snake.RemoveFirstSphere();
-			}
+			snake?.RemoveFirstPart();
 		}
 	}
 }

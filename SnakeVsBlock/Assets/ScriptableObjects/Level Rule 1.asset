@@ -15,7 +15,7 @@ MonoBehaviour:
   backgroundColor: {r: 0.5344251, g: 0.6280184, b: 0.6792453, a: 1}
   finishLineColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
   snakeStartLength: 4
-  snakeScrollSpeed: 5
+  snakeScrollSpeed: 3
   snakeTurnSpeed: 10
   snakeSizeRelativeToColumn: 0.3
   levelLength: 500

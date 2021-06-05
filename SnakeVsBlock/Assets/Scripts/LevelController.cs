@@ -199,4 +199,9 @@ public class LevelController : MonoBehaviour
 	{
 		return columnSize * rules.snakeSizeRelativeToColumn;
 	}
+
+	public Vector2 GetLevelBoundariesX()
+	{
+		return xBoundaries;
+	}
 }
