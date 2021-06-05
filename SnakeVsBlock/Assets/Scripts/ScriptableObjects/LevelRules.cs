@@ -26,4 +26,9 @@ public class LevelRules : ScriptableObject
 	public Vector2Int sphereLifeNb = new Vector2Int(1, 6);
 	[Range(0.1f, 1f)]
 	public float sphereSizeRelativeToColumn = 0.3f;
+
+	public Vector2 wallSize = new Vector2(1f, 5f);
+	public float wallSizeRelativeToColumn = 0.03f;
+	[Range(0, 100)]
+	public int wallSpawnChance = 50;
 }

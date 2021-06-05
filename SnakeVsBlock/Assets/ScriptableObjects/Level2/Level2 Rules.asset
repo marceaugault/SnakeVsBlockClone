@@ -25,3 +25,6 @@ MonoBehaviour:
   distanceBetweenSpheres: {x: 2, y: 5}
   sphereLifeNb: {x: 3, y: 11}
   sphereSizeRelativeToColumn: 0.3
+  wallSize: {x: 1, y: 5}
+  wallSizeRelativeToColumn: 0.1
+  wallSpawnChance: 50

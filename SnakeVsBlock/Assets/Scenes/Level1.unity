@@ -806,7 +806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae0f889bf9f49c41a9ecdd4773cbfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 10
   offset: {x: 0, y: 10, z: 2}
 --- !u!1 &1145773153
 GameObject:
@@ -1142,6 +1142,7 @@ MonoBehaviour:
   rules: {fileID: 11400000, guid: 7344a9fedf61a494781c0b2fabb30b4a, type: 2}
   blockPrefab: {fileID: 422795554107431915, guid: a7f4362b9ff4ae64483e57448753ed68, type: 3}
   spherePrefab: {fileID: 4141021700327609705, guid: 3f8389685d5c87542895acb685649f09, type: 3}
+  wallPrefab: {fileID: 71397601514798263, guid: 176c85abc39c8d74c83191f8c2867fb5, type: 3}
 --- !u!1 &1458834642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1791,7 +1792,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876191116}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -2.48}
   m_LocalScale: {x: 0.03, y: 0.03, z: 2}
   m_Children:
   - {fileID: 1145773154}

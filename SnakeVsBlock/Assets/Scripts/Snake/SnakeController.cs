@@ -13,8 +13,6 @@ public class SnakeController : MonoBehaviour
 	int currentLength;
 	[SerializeField] int poolSize = 100;
 
-	Vector2 xBoundaries;
-
 	float snakeSpeed = 5f;
 	float bodyPartSize;
 
@@ -57,10 +55,6 @@ public class SnakeController : MonoBehaviour
 			snakeSpeed = snakeVariables.snakeSpeed;
 			bodyPartSize = level.GetSnakeSphereSize();
 
-			xBoundaries = level.GetLevelBoundariesX();
-			xBoundaries.x += bodyPartSize;
-			xBoundaries.y -= bodyPartSize;
-
 			levelLength = level.GetLevelLength();
 
 			SpawnBody();
@@ -92,7 +86,7 @@ public class SnakeController : MonoBehaviour
 		for (int i = CurrentLength - 1; i >= 1; i--)
 		{
 			Vector3 dir = (bodyParts[i].transform.position - bodyParts[i - 1].transform.position).normalized;
-			bodyParts[i].transform.position = bodyParts[i - 1].transform.position + dir * bodyPartSize;
+			bodyParts[i].GetComponent<Rigidbody>().MovePosition(bodyParts[i - 1].transform.position + dir * bodyPartSize * 0.9f);
 		}
 
 		Vector3 inputs = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
@@ -100,7 +94,7 @@ public class SnakeController : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			Vector3 touchDelta = Input.GetTouch(0).deltaPosition;
-			inputs.x = touchDelta.x * 0.06f;
+			inputs.x += touchDelta.x * 0.04f;
 		}
 
 		Vector3 mvt = Vector3.forward + inputs;
@@ -109,14 +103,9 @@ public class SnakeController : MonoBehaviour
 			mvt.z = 0f;
 		}
 
-		bodyParts[0].transform.Translate(mvt * snakeSpeed * Time.fixedDeltaTime);
+		bodyParts[0].GetComponent<Rigidbody>().MovePosition(bodyParts[0].transform.position + mvt * snakeSpeed * Time.fixedDeltaTime);
 
-		Vector3 crtPos = bodyParts[0].transform.position;
-		crtPos.x = Mathf.Clamp(crtPos.x, xBoundaries.x, xBoundaries.y);
-
-		bodyParts[0].transform.position = crtPos;
-
-		manager.UpdateCompletionPercent(crtPos.z / levelLength);
+		manager.UpdateCompletionPercent(bodyParts[0].transform.position.z / levelLength);
 	}
 
 	void UpdateTextCount()

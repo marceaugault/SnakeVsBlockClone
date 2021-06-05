@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8758882689236857003}
   - component: {fileID: -5217282295990928545}
   m_Layer: 6
-  m_Name: SnakeSphere
+  m_Name: SnakeBodyPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,5 +110,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0

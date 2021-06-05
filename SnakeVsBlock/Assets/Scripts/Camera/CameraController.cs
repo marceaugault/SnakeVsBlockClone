@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
 		transform.position = target.GetHeadPosition() + offset;
 	}
 
-    void LateUpdate()
+    void FixedUpdate()
     {
 		float targetPos = (target.GetHeadPosition() + offset).z;
 
@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 		}
 
 		Vector3 newPos = transform.position;
-		newPos.z = Mathf.Lerp(transform.position.z, targetPos, speed * Time.smoothDeltaTime);
+		newPos.z = Mathf.Lerp(transform.position.z, targetPos, speed * Time.fixedDeltaTime);
 
 		transform.position = newPos;
     }

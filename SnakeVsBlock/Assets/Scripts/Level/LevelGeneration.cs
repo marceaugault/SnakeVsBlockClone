@@ -7,8 +7,10 @@ public class LevelGeneration : MonoBehaviour
 
 	public GameObject blockPrefab;
 	public GameObject spherePrefab;
+	public GameObject wallPrefab;
 
 	Vector3 blockScale;
+	Vector3 wallScale;
 
 	Vector2 xBoundaries;
 	float levelWidth;
@@ -28,6 +30,7 @@ public class LevelGeneration : MonoBehaviour
 		columnSize = levelWidth / (float)rules.nbColumn;
 
 		blockScale = new Vector3(columnSize, 1f, columnSize);
+		wallScale = new Vector3(columnSize * rules.wallSizeRelativeToColumn, 0.95f, 1f);
 
 		CreateLevel();
 	}
@@ -82,7 +85,44 @@ public class LevelGeneration : MonoBehaviour
 				lastSphereSpawn++;
 				lastBlockSpawn++;
 			}
+
+			int rand = Random.Range(0, 100);
+			if (rand >= rules.wallSpawnChance && firstWallSpawned)
+			{
+				SpawnWall(z);
+			}
 		}
+
+		SpawnBoundaries();
+	}
+
+	private void SpawnBoundaries()
+	{
+		Vector3 pos = new Vector3(xBoundaries.x - 0.4f, 0f, rules.levelLength / 2f);
+		GameObject go = Instantiate(new GameObject(), pos, Quaternion.identity);
+		BoxCollider col = go.AddComponent<BoxCollider>();
+		col.size = new Vector3(1f, 1f, rules.levelLength);
+
+		pos = new Vector3(xBoundaries.y + 0.4f, 0f, rules.levelLength / 2f);
+		go = Instantiate(new GameObject(), pos, Quaternion.identity);
+		col = go.AddComponent<BoxCollider>();
+		col.size = new Vector3(1f, 1f, rules.levelLength);
+	}
+
+	private void SpawnWall(float z)
+	{
+		if (!wallPrefab)
+		{
+			return;
+		}
+
+		int x = Random.Range(1, rules.nbColumn);
+
+		Vector3 pos = new Vector3(xBoundaries.x + x * columnSize, 0f, z);
+		GameObject go = Instantiate(wallPrefab, pos, Quaternion.identity);
+
+		Vector3 scale = new Vector3(wallScale.x, wallScale.y, wallScale.z * Random.Range(rules.wallSize.x, rules.wallSize.y));
+		go.transform.localScale = scale;
 	}
 
 	private void SpawnWallBlocks(float z)

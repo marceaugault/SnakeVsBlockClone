@@ -17,11 +17,11 @@ public class LootableSphere : MonoBehaviour
 		nbTxt.text = sphereNb.ToString();
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider other)
 	{
-		if (((1 << collision.gameObject.layer) & LayerMask.GetMask("Snake")) != 0)
+		if (((1 << other.gameObject.layer) & LayerMask.GetMask("Snake")) != 0)
 		{
-			SnakeController snake = collision.gameObject.GetComponentInParent<SnakeController>();
+			SnakeController snake = other.gameObject.GetComponentInParent<SnakeController>();
 			if (snake)
 			{
 				snake.AddSphere(sphereNb);

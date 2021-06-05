@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Level1 SnakeVariables
   m_EditorClassIdentifier: 
   snakeStartLength: 4
-  snakeSpeed: 2
+  snakeSpeed: 4
